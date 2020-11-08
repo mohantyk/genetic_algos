@@ -8,10 +8,11 @@ import seaborn as sns
 # Problem constants
 ONE_MAX_LENGTH = 100
 # Genetic Algorithm constants
-POPULATION_SIZE = 100
+POPULATION_SIZE = 200
 P_CROSSOVER = 0.9
 P_MUTATION = 0.1
 MAX_GENERATIONS = 50
+HALL_OF_FAME_SIZE = 5
 # SEED
 RANDOM_SEED = 42
 random.seed(RANDOM_SEED)
@@ -54,17 +55,24 @@ def main():
     stats.register('max', np.max)
     stats.register('avg', np.mean)
 
+    # Hall of Fame
+    hof = tools.HallOfFame(HALL_OF_FAME_SIZE)
+
     # Run algorithm
     population, logbook = algorithms.eaSimple(population, toolbox,
                                             cxpb=P_CROSSOVER,
                                             mutpb=P_MUTATION,
                                             ngen=MAX_GENERATIONS,
                                             stats=stats,
+                                            halloffame=hof,
                                             verbose=True)
     # Extract statistics
     max_fitness_values, mean_fitness_values = logbook.select('max', 'avg')
 
-    # Genetic Algorithm is done - plot statistics
+
+    # Print hall of fame
+    print("Hall of Fame individuals: ", *hof.items, sep='\n')
+    # Plot statistics
     sns.set_style("whitegrid")
     plt.plot(max_fitness_values, color='red')
     plt.plot(mean_fitness_values, color='green')
