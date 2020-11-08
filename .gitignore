@@ -1,1 +1,4 @@
 book_code
+*.ipynb
+*.pickle
+.DS_Store
