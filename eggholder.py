@@ -4,6 +4,9 @@ from book_code.Chapter04.elitism import eaSimpleWithElitism
 import random
 import numpy as np
 
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 def eggholder(individual):
     x = individual[0]
     y = individual[1]
@@ -20,11 +23,11 @@ BOUND_HIGH = 512
 DIMENSIONS = 2
 
 # GENETIC ALGO CONSTANTS
-POPULATION_SIZE = 100
-NUM_GENERATIONS = 200
+POPULATION_SIZE = 300
+NUM_GENERATIONS = 300
 TOURNAMENT_SIZE = 2
 P_CROSSOVER = 0.9
-P_MUTATION = 0.1
+P_MUTATION = 0.3
 CROWDING_FACTOR = 20
 HALL_OF_FAME_SIZE = 20
 
@@ -65,7 +68,15 @@ def main():
     # Print results
     best = hof.items[0]
     best_value = best.fitness.values[0]
-    print(f'Best value = {best_value:.3f} @ {best}')
+    print(f'Best value = {best_value:.4f} @ {best}')
+
+    # Plot stats
+    min_fitness, avg_fitness = logbook.select('min', 'avg')
+    plt.figure(1)
+    sns.set_style('whitegrid')
+    plt.plot(min_fitness, color='red')
+    plt.plot(avg_fitness, color='green')
+    plt.show()
 
 
 if __name__ == '__main__':
