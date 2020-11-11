@@ -8,6 +8,13 @@ import math
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# PROBLEM CONSTANTS
+BOUND_LOW = -1.25
+BOUND_HIGH = 1.25
+DIMENSIONS = 2
+CONSTRAINT_PENALTY = 10.0
+DISTANCE_THRESHOLD = 0.1
+
 def simionescu(individual):
     x = individual[0]
     y = individual[1]
@@ -17,17 +24,17 @@ def simionescu(individual):
 def feasibility(individual):
     x = individual[0]
     y = individual[1]
-    return x**2 + y**2 <= (1 + 0.2 * math.cos(8.0 * math.atan2(x, y)))**2
+    first_minima = (0.848, -0.848)
+    if x**2 + y**2 > (1 + 0.2 * math.cos(8.0 * math.atan2(x, y)))**2:
+        return False
+    elif (x - first_minima[0])**2 + (y - first_minima[1])**2 < DISTANCE_THRESHOLD**2:
+        return False
+    return True
 
 # RANDOM SEED
 RANDOM_SEED = 42
 random.seed(RANDOM_SEED)
 
-# PROBLEM CONSTANTS
-BOUND_LOW = -1.25
-BOUND_HIGH = 1.25
-DIMENSIONS = 2
-CONSTRAINT_PENALTY = 10.0
 
 # GENETIC ALGO CONSTANTS
 POPULATION_SIZE = 300
